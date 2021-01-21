@@ -13,12 +13,12 @@
       <el-form-item label="家庭住址" prop="homeaddress">
         <el-input v-model="ruleForm.homeaddress"></el-input>
       </el-form-item>
-      <el-form-item label="第几次" prop="injecttimes">
-        <el-select v-model="ruleForm.injecttimes" placeholder="请选择第几次">
-          <el-option label="第一次" value="1"></el-option>
-          <el-option label="第二次" value="2"></el-option>
-        </el-select>
-      </el-form-item>
+<!--      <el-form-item label="第几次" prop="injecttimes">-->
+<!--        <el-select v-model="ruleForm.injecttimes" placeholder="请选择第几次">-->
+<!--          <el-option label="第一次" value="1"></el-option>-->
+<!--          <el-option label="第二次" value="2"></el-option>-->
+<!--        </el-select>-->
+<!--      </el-form-item>-->
 
       <el-form-item label="性别" prop="sex">
         <el-radio-group v-model="ruleForm.sex">
@@ -26,7 +26,7 @@
           <el-radio label="女"></el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="备注" prop="desc">
+      <el-form-item label="备注List" prop="desc">
         <el-input type="textarea" v-model="ruleForm.desc"></el-input>
       </el-form-item>
       <el-form-item>
