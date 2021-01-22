@@ -1,7 +1,7 @@
 <template>
   <div class="VaccineBooking ">
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-      <el-form-item label="名字" prop="name">
+      <el-form-item label="姓名" prop="name">
         <el-input v-model="ruleForm.name"></el-input>
       </el-form-item>
       <el-form-item label="手机号" prop="phoneno">
@@ -20,17 +20,18 @@
 <!--        </el-select>-->
 <!--      </el-form-item>-->
 
-      <el-form-item label="性别" prop="sex">
-        <el-radio-group v-model="ruleForm.sex">
-          <el-radio label="男"></el-radio>
-          <el-radio label="女"></el-radio>
-        </el-radio-group>
-      </el-form-item>
+<!--      <el-form-item label="性别" prop="sex">-->
+<!--        <el-radio-group v-model="ruleForm.sex">-->
+<!--          <el-radio label="男"></el-radio>-->
+<!--          <el-radio label="女"></el-radio>-->
+<!--        </el-radio-group>-->
+<!--      </el-form-item>-->
       <el-form-item label="备注1" prop="desc">
         <el-input type="textarea" v-model="ruleForm.desc"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
+        <el-button type="primary" @click="queryForm('ruleForm')">查询</el-button>
+        <el-button type="primary" @click="submitForm('ruleForm')">添加</el-button>
         <el-button @click="resetForm('ruleForm')">重置</el-button>
       </el-form-item>
     </el-form>
@@ -41,17 +42,23 @@
       border
       style="width: 100%">
       <el-table-column
-        prop="date"
-        label="日期"
-        width="180">
-      </el-table-column>
-      <el-table-column
         prop="name"
         label="姓名"
         width="180">
       </el-table-column>
       <el-table-column
-        prop="address"
+        prop="phoneno"
+        label="手机号"
+        width="180">
+      </el-table-column>
+<!--      <el-table-column-->
+<!--        prop="date"-->
+<!--        label="日期"-->
+<!--        width="180">-->
+<!--      </el-table-column>-->
+
+      <el-table-column
+        prop="homeaddress"
         label="地址">
       </el-table-column>
     </el-table>
@@ -66,47 +73,20 @@
           ruleForm: {
             name: '',
             injecttimes: '',
-            date1: '',
-            date2: '',
+            credentialsno: '',
+            phoneno: '',
             delivery: false,
             type: [],
             sex: '',
             desc: '',
-            info2: ''
+            info2: '',
+            homeaddress: ''
           },
-          tableData: [{
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          }, {
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          }, {
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          }, {
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          }, {
-            date: '2016-05-08',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          }, {
-            date: '2016-05-06',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          }, {
-            date: '2016-05-07',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          }],
+          tableData: [],
           rules: {
             name: [
-              { required: true, message: '请输入活动名称', trigger: 'blur' },
-              { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+              { required: true, message: '请输入姓名', trigger: 'blur' },
+              { min: 1, max: 200, message: '长度在 1 到 200 个字符', trigger: 'blur' }
             ],
             injecttimes: [
               { required: true, message: '请选择活动区域', trigger: 'change' }
@@ -133,26 +113,33 @@
         submitForm(formName) {
           this.$refs[formName].validate((valid) => {
             var _this = this;
+            var reqdata = this.$qs.stringify(_this.ruleForm);
             this.$axios
-              .get('http://localhost:8080/findAll')
+              .post('http://ifreedom61.xyz:80/vbapi/vb/insertRecord',reqdata)
               .then(res=>{
                 console.log(res.data);
-                _this.ruleForm = res.data[0];
-                _this.ruleForm.desc = res.data[0].name;
+                // _this.ruleForm = res.data[0];
+                // _this.ruleForm.desc = res.data[0].name;
+                _this.tableData=res.data;
+
               })
-            //
-            // if (valid) {
-            //
-            //   console.log(_this.ruleForm);
-            //   alert('submit!');
-            // } else {
-            //   console.log('error submit!!');
-            //   return false;
-            // }
+
           });
         },
         resetForm(formName) {
           this.$refs[formName].resetFields();
+        },queryForm(formName){
+
+            var _this = this;
+            var reqdata = this.$qs.stringify(_this.ruleForm);
+            this.$axios
+                .post('http://ifreedom61.xyz:80/vbapi/vb/findAll',reqdata)
+                .then(res=>{
+                  console.log(res.data);
+                  // _this.ruleForm = res.data[0];
+                  _this.tableData=res.data;
+
+                })
         }
       }
     }
