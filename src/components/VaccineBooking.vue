@@ -118,10 +118,8 @@
               .post('http://ifreedom61.xyz:80/vbapi/vb/insertRecord',reqdata)
               .then(res=>{
                 console.log(res.data);
-                // _this.ruleForm = res.data[0];
-                // _this.ruleForm.desc = res.data[0].name;
                 _this.tableData=res.data;
-
+                reqdata = '';
               })
 
           });
@@ -131,14 +129,14 @@
         },queryForm(formName){
 
             var _this = this;
-            var reqdata = this.$qs.stringify(_this.ruleForm);
+            var queryreqdata = this.$qs.stringify(_this.ruleForm);
             this.$axios
-                .post('http://ifreedom61.xyz:80/vbapi/vb/findAll',reqdata)
+                .post('http://ifreedom61.xyz:80/vbapi/vb/findAll',queryreqdata)
                 .then(res=>{
                   console.log(res.data);
                   // _this.ruleForm = res.data[0];
                   _this.tableData=res.data;
-
+                  queryreqdata = '';
                 })
         }
       }
